@@ -16,7 +16,7 @@ RSpec.describe "メッセージ投稿機能", type: :system do
 
       # DBに保存されていないことを確認する
        expect{
-         find('input[name="commit]'),click
+         find('input[name="commit"]').click
        }.not_to change { Message.count }
       # 元のページに戻ってくることを確認する
       expect(current_path).to eq  room_messages_path(@room_user.room)
@@ -36,8 +36,8 @@ RSpec.describe "メッセージ投稿機能", type: :system do
        fill_in 'message_content', with: post
       # 送信した値がDBに保存されていることを確認する
        expect{
-         find('input[name="commit]')click
-       }.to change { Message.count }by(1)
+         find('input[name="commit"]').click
+       }.to change { Message.count }.by(1)
       # 投稿一覧画面に遷移していることを確認する
         expect(current_path).to eq room_messages_path(@room_user.room)
       # 送信した値がブラウザに表示されていることを確認する
@@ -57,12 +57,12 @@ RSpec.describe "メッセージ投稿機能", type: :system do
       attach_file('message[image]', image_path, make_visible: true)
       # 送信した値がDBに保存されていることを確認する
       expect{
-        find("input[name="commit"]").click
-      }.to change( Message.count ).by(1)
+        find('input[name="commit"]').click
+      }.to change{ Message.count }.by(1)
       # 投稿一覧画面に遷移していることを確認する
        expect(current_path).to eq room_messages_path(@room_user.room)
       # 送信した画像がブラウザに表示されていることを確認する
-       expect(page).to have_selecter("img")
+       expect(page).to have_selector("img")
     end
     it 'テキストと画像の投稿に成功すること' do
       # サインインする
@@ -76,17 +76,21 @@ RSpec.describe "メッセージ投稿機能", type: :system do
 
       # 画像選択フォームに画像を添付する
       attach_file('message[image]', image_path, make_visible: true)
+
       # 値をテキストフォームに入力する
       post = "テスト"
       fill_in 'message_content', with: post
+
       # 送信した値がDBに保存されていることを確認する
       expect{
-        find("input[name="commit"]").click  
-      }.to change( Message.count ).by(1)
+        find('input[name="commit"]').click
+      }.to change { Message.count }.by(1)
+
       # 送信した値がブラウザに表示されていることを確認する
       expect(page).to have_content(post)
+
       # 送信した画像がブラウザに表示されていることを確認する
-      expect(page).to have_selecter("img")
+      expect(page).to have_selector("img")
     end
   end
 end
